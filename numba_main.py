@@ -25,7 +25,7 @@ def count_primes(n, non_prime):
 time_before_prime = time.time()
 non_prime = np.zeros(prime_N + 1, dtype=int)
 prime_counter = count_primes(prime_N, non_prime)
-print("numer of primes", prime_counter)
+print("number of primes", prime_counter)
 print("time to count primes", time.time() - time_before_prime)
 
 

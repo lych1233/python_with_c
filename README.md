@@ -209,8 +209,29 @@ print()
 
 #### 结果
 
-### Cython
+```bash
+number of primes 809281
+time to count primes 1.362342357635498
 
+============================================================
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with (python built-in) heap 1.5404198169708252
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with segment tree 0.5512020587921143
+```
+
+
+### Cython
 
 体验：
 - 需要手动预编译（也可以使用[import pyximport](https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html)，因此更适合加速模块不需要频繁修改的场景
@@ -420,7 +441,26 @@ print()
 #### 结果
 
 ```bash
+number of primes 809281
+time to count primes 1.0351805686950684
+
+============================================================
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with (C++ STL) heap 0.46610355377197266
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with segment tree 0.5703625679016113
 ```
+
 
 
 #### 如何检查cython的运行瓶颈
@@ -450,6 +490,7 @@ profile.print_stats()
 ```
 
 结果：
+
 ```
 Total time: 47.7958 s
 File: cython_functions.pyx
@@ -602,10 +643,12 @@ void dijkstra_segment(int pw2, int n, int m, const int sta, int *x, int *y, int 
 ```
 
 然后使用
+
 ```bash
-gcc -fPIC -shared -o ctypes_utils.so ctypes_utils.cpp
+g++ -fPIC -shared -o ctypes_utils.so ctypes_utils.cpp
 ```
-讲其编译为.so文件后，使用ctypes来调用
+
+将其编译为.so文件后，使用ctypes来调用
 
 ```python
 import time
@@ -680,9 +723,27 @@ print()
 ```
 
 运行结果：
-```bash
-```
 
+```bash
+number of primes 809281
+time to count primes 1.3410861492156982
+
+============================================================
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with (C++ STL) heap 1.0098302364349365
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with segment tree 0.7336339950561523
+```
 
 
 ### 结论
@@ -694,6 +755,6 @@ print()
 - cython几乎总是能加速，但需要小心在微小的地方成为性能瓶颈，这一部分学习成本较高
 
 如何选择：
-- 如果对c和c++熟悉，优先选择功能强大的cython
+- 如果对c和c++熟悉，优先选择功能强大的cython（cython语法本身其实也不难学）
 - 如果只会python语法，或者需要频繁改写需要加速的模块，可以使用更方便的numba
 - 不推荐使用ctypes从头搭建project，建议只用于和现成的c模块交互
