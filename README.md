@@ -46,6 +46,24 @@ print("time to count primes", time.time() - time_before_prime)
 运行结果
 
 ```bash
+number of primes 809281
+time to count primes 31.729369640350342
+
+============================================================
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with heap 24.423399686813354
+
+distance from 1 to 123456 = 325821946
+distance from 2 to 61728 = 228774322
+distance from 3 to 41152 = 118858507
+distance from 4 to 30864 = 108589930
+distance from 5 to 24691 = 297591540
+time for dijkstra with segment tree 165.15777349472046
 ```
 
 
@@ -65,7 +83,7 @@ import time
 import heapq
 
 import numpy as np
-from numba import jit, njit
+from numba import njit
 from numba.typed import List
 
 
@@ -74,7 +92,7 @@ graph_V = 123456
 graph_E = 1234567
 
 
-# always use njit for efficieny (numba will check for validity
+# always use njit for efficieny (numba will check for validity)
 # cache=True to avoid slow running for the first time
 @njit(cache=True)
 def count_primes(n, non_prime):
@@ -90,7 +108,7 @@ def count_primes(n, non_prime):
 time_before_prime = time.time()
 non_prime = np.zeros(prime_N + 1, dtype=int)
 prime_counter = count_primes(prime_N, non_prime)
-print("numer of primes", prime_counter)
+print("number of primes", prime_counter)
 print("time to count primes", time.time() - time_before_prime)
 
 
@@ -231,10 +249,12 @@ time for dijkstra with segment tree 0.5512020587921143
 ```
 
 
+
 ### Cython
 
 体验：
-- 需要手动预编译（也可以使用[import pyximport](https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html)，因此更适合加速模块不需要频繁修改的场景
+- 功能非常强大，兼容性非常强
+- 需要手动预编译（也可以使用[import pyximport](https://cython.readthedocs.io/en/latest/src/userguide/source_files_and_compilation.html)来避免），因此更适合加速模块不需要频繁修改的场景
 - 编译后生成的C语言代码并不容易阅读
 - 因为只要语法正确就能成功运行，因此难以发现运行时的性能瓶颈；而numba则有严格的检查机制，但与之相对，numba就无法像cython一样灵活；所以需要使用一些工具来检查cython的运行效率
 
@@ -242,7 +262,7 @@ time for dijkstra with segment tree 0.5512020587921143
 
 #### 代码
 
-首先写一个cython_utils.pyx来存放需要加速的模块：
+首先写一个cython_utils.pyx来存放需要加速的模块（如果想使用c++特性，注意在开头指定需要c++编译器）：
 
 ```cython
 # distutils: language = c++

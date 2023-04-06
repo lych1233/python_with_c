@@ -2,7 +2,7 @@ import time
 import heapq
 
 import numpy as np
-from numba import jit, njit
+from numba import njit
 from numba.typed import List
 
 
@@ -11,6 +11,8 @@ graph_V = 123456
 graph_E = 1234567
 
 
+# always use njit for efficieny (numba will check for validity)
+# cache=True to avoid slow running for the first time
 @njit(cache=True)
 def count_primes(n, non_prime):
     for i in range(2, n):
